@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var isNight = false
+    
     var body: some View {
         ZStack{
-            BackgroundView(topColor: Color.blue, bottomColor: Color.red)
+            BackgroundView(
+                topColor: isNight ? .black : .blue,
+                bottomColor: isNight ? .gray : .red)
             
             VStack{
                 CityTextView(nameCity: "São Carlos, SP")
                 
-                MainWeatherStatusView(imageName: "cloud.moon.rain.fill", temperature: 25)
+                MainWeatherStatusView(
+                    imageName: isNight ? "cloud.moon.fill" : "cloud.sun.fill",
+                    temperature: 25)
                 
                 HStack(spacing: 20){
                     WeatherDayView(
@@ -25,12 +32,12 @@ struct ContentView: View {
                     
                     WeatherDayView(
                         dayOfWeek: "WED",
-                        imageName: "sun.max.fill",
+                        imageName: isNight ? "moon.stars.fill" : "sun.max.fill",
                         temperature: 29)
                     
                     WeatherDayView(
                         dayOfWeek: "THU",
-                        imageName: "sun.max.fill",
+                        imageName: isNight ? "moon.stars.fill" : "sun.max.fill",
                         temperature: 30)
                     
                     WeatherDayView(
@@ -47,7 +54,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                    print("tapped")
+                    isNight.toggle()
                 } label: {
                     WeatherButton(title: "Change Day Time", textColor: .purple, backgroundColor: .white)
                 }
@@ -87,7 +94,7 @@ struct WeatherDayView: View {
 }
 
 struct BackgroundView: View {
-    
+
     var topColor: Color
     var bottomColor: Color
     
@@ -135,19 +142,4 @@ struct MainWeatherStatusView: View {
     }
 }
 
-struct WeatherButton: View {
-    
-    var title: String
-    var textColor: Color
-    var backgroundColor: Color
-    
-    var body: some View {
 
-        Text(title)
-            .frame(width: 200,  height: 50)
-            .background(backgroundColor)
-            .foregroundColor(textColor)
-            .font(.system(size: 20, weight: .bold, design: .rounded))
-            .cornerRadius(10)
-    }
-}
